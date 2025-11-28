@@ -1,74 +1,116 @@
-import matplotlib.pyplot as plt
-import pyttsx3
-import os
-import webbrowser
-import speech_recognition as sr
-import pywhatkit
+from flask import Flask
 
-speaker = pyttsx3.init()
-mic = sr.Recognizer()
+app = Flask(__name__)
 
-speaker.say("Welcome to Bixby")
-speaker.runAndWait()
+@app.route("/")
+def home():
+    return """
+   <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aditya Jha - Resume</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #eaeaea;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #222;
+            margin-bottom: 5px;
+        }
+        h3 {
+            color: #444;
+            margin-top: 0;
+        }
+        .section {
+            margin-top: 30px;
+        }
+        .section h2 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .line {
+            height: 2px;
+            background: #222;
+            width: 60px;
+            margin-bottom: 15px;
+        }
+        ul {
+            line-height: 1.7em;
+        }
+    </style>
+</head>
+<body>
 
-with sr.Microphone() as source:
-    print("Start speaking...")
-    mic.adjust_for_ambient_noise(source, duration=1)
+    <div class="container">
+        <h1>Aditya Jha</h1>
+        <h3>B.Tech (CSE - AI/ML), Vivekananda Global University</h3>
 
-    try:
-        voice = mic.listen(source, timeout=5, phrase_time_limit=5)
-        text = mic.recognize_google(voice)
-        command = text.lower()
-        print("You said:", command)
+        <div class="section">
+            <h2>About Me</h2>
+            <div class="line"></div>
+            <p>I am a passionate B.Tech CSE (AI/ML) student at VGU, interested in Python development, web development, machine learning, projects, and problem-solving.</p>
+        </div>
 
-    except sr.UnknownValueError:
-        print("Sorry, I could not understand.")
-        command = ""
+        <div class="section">
+            <h2>Skills</h2>
+            <div class="line"></div>
+            <ul>
+                <li>Python (Flask, Projects, DSA Basics)</li>
+                <li>HTML, CSS, JavaScript</li>
+                <li>Machine Learning Basics</li>
+                <li>Git & GitHub</li>
+                <li>Problem Solving</li>
+            </ul>
+        </div>
 
-    except sr.RequestError:
-        print("Speech service down.")
-        command = ""
+        <div class="section">
+            <h2>Education</h2>
+            <div class="line"></div>
+            <p><strong>Bachelor of Technology (B.Tech)</strong><br>
+            Vivekananda Global University (VGU), Jaipur<br>
+            CSE – AI/ML (2024 - 2028)</p>
+        </div>
 
-    except sr.WaitTimeoutError:
-        print("No speech detected.")
-        command = ""
+        <div class="section">
+            <h2>Projects</h2>
+            <div class="line"></div>
+            <ul>
+                <li>Python Calculator with Exception Handling</li>
+                <li>ATM Program with Password Blocking</li>
+                <li>Student Grade Management System</li>
+                <li>Voice Assistant (Bixby-style)</li>
+            </ul>
+        </div>
 
-# ---------------- COMMANDS ----------------
+        <div class="section">
+            <h2>Contact</h2>
+            <div class="line"></div>
+            <p>Email: adityajha@example.com</p>
+            <p>Phone: +91 9876543210</p>
+        </div>
 
-if "open notepad" in command:
-    print("Opening Notepad...")
-    os.system("notepad")
+    </div>
 
-elif "open youtube" in command:
-    print("Opening YouTube...")
-    webbrowser.open("https://youtube.com")
+</body>
+</html>
 
-elif "open whatsapp" in command or "send message" in command:
-    print("Sending WhatsApp message...")
-    try:
-        pywhatkit.sendwhatmsg_instantly(
-            "+919548892134",
-            "hi i am from vgu",
-            wait_time=10,
-            tab_close=True
-        )
-        print("Message sent!")
+    """
 
-    except Exception as e:
-        print("Error while sending message:", e)
+if __name__ == '__main__':
+    app.run(debug=True)
 
-# ---------------- SPOTIFY COMMAND ----------------
 
-elif "open spotify" in command:
-    print("Opening Spotify...")
-
-    try:
-        # Try desktop app
-        os.system("start spotify")
-    except:
-        # If desktop doesn't exist → open website
-        webbrowser.open("https://open.spotify.com")
-        print("Opened Spotify Web Player")
-
-elif command != "":
-    print("Command not recognized.")
+         
